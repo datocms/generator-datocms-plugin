@@ -1,5 +1,5 @@
 {
-  "name": "datocms-plugin-PLUGIN-NAME",
+  "name": "<%= pluginName %>datocms-plugin-PLUGIN-NAME",
   "homepage": "https://github.com/YOUR-USER/YOUR-PLUGIN-REPO",
   "version": "0.0.1",
   "description": "SMALL-DESCRIPTION",

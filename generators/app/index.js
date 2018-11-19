@@ -6,21 +6,44 @@ module.exports = class extends Generator {
       {
         type    : 'input',
         name    : 'name',
-        message : 'Your plugin name',
+        message : 'Plugin name',
         default : this.appname
       },
       {
-        type    : 'confirm',
-        name    : 'cool',
-        message : 'Would you like to enable the Cool feature?'
+        type    : 'input',
+        name    : 'description',
+        message : 'Plugin description'
+      },
+      {
+        type    : 'checkbox',
+        name    : 'pluginType',
+        message : 'Plugin type (https://www.datocms.com/docs/plugins/introduction/#types-of-plugins)',
+        choices: [
+          { name: 'Field editor', value: 'field_editor' },
+          { name: 'Field add-on', value: 'field_addon' },
+          { name: 'Sidebar widget', value: 'sidebar' }
+        ]
       }
     ]);
-
-    this.log('app name', answers.name);
-    this.log('cool feature', answers.cool);
   }
 
-  method1() {
-    this.log('method 1 just ran');
+  writing() {
+    this.fs.copy(
+      this.templatePath('static/**/*'),
+      this.destinationRoot(),
+      { globOptions: { dot: true } }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('package.json'),
+      this.destinationPath('package.json'),
+      { pluginName: this.aswers.name }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('README.md'),
+      this.destinationPath('README.md'),
+      { pluginName: this.aswers.name }
+    );
   }
 };

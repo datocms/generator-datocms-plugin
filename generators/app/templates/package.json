@@ -1,34 +1,27 @@
 {
-  "name": "<%= pluginName %>datocms-plugin-PLUGIN-NAME",
+  "name": "<%= packageName %>",
   "homepage": "https://github.com/YOUR-USER/YOUR-PLUGIN-REPO",
   "version": "0.0.1",
-  "description": "SMALL-DESCRIPTION",
+  "description": "<%= description %>",
   "main": "index.js",
   "scripts": {
     "start": "concurrently \"yarn dev\" \"yarn localtunnel\"",
-    "localtunnel": "lt -s datocms-plugin --port 5000",
+    "localtunnel": "lt -s <%= packageName %> --port 5000",
     "dev": "NODE_ENV=development webpack-dev-server --port 5000",
     "dist": "NODE_ENV=production webpack --progress",
     "prepublishOnly": "rimraf lib dist && mkdir dist && npm run dist",
     "test": "echo 1"
   },
-  "keywords": [
-    "datocms",
-    "datocms-plugin",
-    "ADD-ANY-ADDITIONAL-TAG-HERE"
-  ],
-  "author": "YOUR-NAME <YOUR@EMAIL>",
+  "keywords": <%- JSON.stringify(keywords) %>,
+  "author": "<%= authorName %> <%= authorEmail %>",
   "license": "ISC",
   "datoCmsPlugin": {
-    "title": "PLUGIN-TITLE",
-    "previewImage": "docs/PREVIEW-IMAGE.gif",
-    "coverImage": "docs/COVER-IMAGE.png",
+    "title": "<%= pluginTitle %>",
+    "previewImage": "docs/preview.gif",
+    "coverImage": "docs/cover.png",
     "entryPoint": "dist/index.html",
     "pluginType": "field_addon",
-    "fieldTypes": [
-      "string",
-      "text"
-    ],
+    "fieldTypes": <%- JSON.stringify(fieldTypes) %>,
     "parameters": {
       "global": [],
       "instance": []

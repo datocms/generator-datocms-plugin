@@ -1,6 +1,6 @@
 {
   "name": "<%= packageName %>",
-  "homepage": "https://github.com/YOUR-USER/YOUR-PLUGIN-REPO",
+  "homepage": "<%= homepage %>",
   "version": "0.0.1",
   "description": "<%= description %>",
   "main": "index.js",
@@ -13,7 +13,7 @@
     "test": "echo 1"
   },
   "keywords": <%- JSON.stringify(keywords) %>,
-  "author": "<%= authorName %> <%= authorEmail %>",
+  "author": "<%= authorName %> <<%= authorEmail %>>",
   "license": "ISC",
   "datoCmsPlugin": {
     "title": "<%= pluginTitle %>",
@@ -22,10 +22,7 @@
     "entryPoint": "dist/index.html",
     "pluginType": "field_addon",
     "fieldTypes": <%- JSON.stringify(fieldTypes) %>,
-    "parameters": {
-      "global": [],
-      "instance": []
-    }
+    "parameters": <%- JSON.stringify(parameterDefinitions) %>
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.54",

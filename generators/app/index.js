@@ -56,7 +56,7 @@ module.exports = class extends Generator {
     this.log('Hi! I am your DatoCMS plugin generator!');
     this.log('I will generate for you the structure of a Webpack project to start developing your shiny new DatoCMS plugin right away! Let\'s start, shall we? :)');
 
-    this.answers = await this.prompt([
+    const { packageName } = await this.prompt([
       {
         type    : 'input',
         name    : 'packageName',
@@ -69,11 +69,15 @@ module.exports = class extends Generator {
             return "You need to add a datocms-plugin- prefix!";
           }
         }
-      },
+      }
+    ]);
+
+    this.answers = await this.prompt([
       {
         type    : 'input',
         name    : 'pluginTitle',
         message : 'Please insert a human name for this plugin',
+        default: changeCase.titleCase(packageName.replace('datocms-plugin-', '')),
         validate: required,
       },
       {
@@ -94,24 +98,6 @@ module.exports = class extends Generator {
         validate: required,
       },
       {
-        type    : 'input',
-        name    : 'keywords',
-        message : 'Please add some tags to make the plugin more discoverable (comma separated)',
-        validate: required,
-      },
-      {
-        type    : 'input',
-        name    : 'authorName',
-        message : 'What\'s your name?',
-        validate: required,
-      },
-      {
-        type    : 'input',
-        name    : 'authorEmail',
-        message : 'What\'s your email?',
-        validate: required,
-      },
-      {
         type    : 'checkbox',
         name    : 'fieldTypes',
         message : 'Which kind of fields is this plugin compatible with?',
@@ -130,29 +116,61 @@ module.exports = class extends Generator {
         validate: atLeastOne,
       },
       {
-        type    : 'checkbox',
-        name    : 'fieldTypes',
-        message : 'Which kind of fields is this plugin compatible with?',
-        choices:
-        [
-          { name: 'Boolean', value: 'boolean' },
-          { name: 'Date', value: 'date' },
-          { name: 'Date-time', value: 'date_time' },
-          { name: 'Float', value: 'float' },
-          { name: 'Integer', value: 'integer' },
-          { name: 'String', value: 'string' },
-          { name: 'Text', value: 'text' },
-          { name: 'JSON', value: 'json' },
-          { name: 'Color', value: 'color' },
-        ],
-        validate: atLeastOne,
-      },
-      {
-        type    : 'confirm',
-        name    : 'addToProject',
-        message : 'Would you like to add this plugin in development mode to one of your projects and start developing it right away?',
+        type    : 'editor',
+        name    : 'parameterDefinitions',
+        message : 'Please insert any configuration parameters this plugin requires (see https://www.datocms.com/docs/plugins/creating-a-new-plugin/#configuration-parameters)',
+        default : JSON.stringify({ global: [], instance: [] }, null, 2),
+        validate: (value) => {
+          try {
+            const defs = JSON.parse(value);
+            if (defs.instance && Array.isArray(defs.instance) && defs.global && Array.isArray(defs.global)) {
+              return true;
+            }
+            return 'Please insert a valid JSON object';
+          } catch(e) {
+            return 'Not valid JSON';
+          }
+        },
       },
     ]);
+
+    this.answers = Object.assign(
+      { packageName },
+      this.answers,
+      await this.prompt([
+        {
+          type    : 'input',
+          name    : 'keywords',
+          message : 'Please add some tags to make the plugin more discoverable (comma separated)',
+          validate: required,
+          default: [changeCase.paramCase(this.answers.pluginType)].concat(this.answers.fieldTypes.map(ft => `${changeCase.paramCase(ft)}-field` )).join(', '),
+        },
+        {
+          type    : 'input',
+          name    : 'homepage',
+          message : 'Please add the homepage for this plugin',
+          validate: required,
+          default: `https://github.com/YOUR-USER/${packageName}`
+        },
+        {
+          type    : 'input',
+          name    : 'authorName',
+          message : 'What\'s your name?',
+          validate: required,
+        },
+        {
+          type    : 'input',
+          name    : 'authorEmail',
+          message : 'What\'s your email?',
+          validate: required,
+        },
+        {
+          type    : 'confirm',
+          name    : 'addToProject',
+          message : 'Would you like to add this plugin in development mode to one of your projects and start developing it right away?',
+        },
+      ])
+    );
 
     if (this.answers.addToProject) {
       await this.prompt([
@@ -179,8 +197,6 @@ module.exports = class extends Generator {
       ]);
 
       this.answers.site = answers2.site;
-
-      console.log(this.answers.site);
     }
   }
 
@@ -191,9 +207,11 @@ module.exports = class extends Generator {
       pluginType,
       description,
       authorName,
+      parameterDefinitions,
       authorEmail,
       keywords,
-      fieldTypes
+      fieldTypes,
+      homepage,
     } = this.answers;
 
     this.fs.copy(
@@ -212,12 +230,13 @@ module.exports = class extends Generator {
         authorName,
         authorEmail,
         fieldTypes,
-        keywords: keywords.split(',').concat(
-          [
-            "datocms",
-            "datocms-plugin"
-          ]
-        )
+        homepage,
+        parameterDefinitions: JSON.parse(parameterDefinitions),
+        keywords: ['datocms', 'datocms-plugin'].concat(
+          [changeCase.paramCase(this.answers.pluginType)],
+          this.answers.fieldTypes.map(ft => `${changeCase.paramCase(ft)}-field`),
+          keywords.split(/\s*,\s*/)
+        ).filter((value, index, self) => self.indexOf(value) === index),
       }
     );
 
@@ -238,10 +257,7 @@ module.exports = class extends Generator {
         description: description,
         fieldTypes,
         pluginType,
-        parameterDefinitions: {
-          global: [],
-          instance: [],
-        },
+        parameterDefinitions: JSON.parse(parameterDefinitions),
         url: `https://${packageName}.localtunnel.me/`,
       });
     }

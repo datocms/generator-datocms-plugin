@@ -23,7 +23,13 @@ The plugin will be served from https://<%= packageName %>.localtunnel.me. Insert
 
 ## Publishing
 
-To publish this plugin, make sure to properly compile this project `package.json` following the [official rules](https://www.datocms.com/docs/plugins/publishing/), then run
+Before publishing this plugin, make sure:
+
+* you've properly described any configuration parameters in this README file;
+* you've properly compiled this project's `package.json` following the [official rules](https://www.datocms.com/docs/plugins/publishing/);
+* you've added a cover image (`cover.png`) and a preview GIF (`preview.gif`) into the `docs` folder.
+
+When everything's ready, just run:
 
 ```
 yarn publish

@@ -6,12 +6,8 @@
   "repository": "git@github.com:datocms/generator-datocms-plugin.git",
   "author": "support@datocms.com",
   "license": "MIT",
-  "files": [
-    "generators"
-  ],
-  "keywords": [
-    "yeoman-generator"
-  ],
+  "files": ["generators"],
+  "keywords": ["yeoman-generator"],
   "dependencies": {
     "change-case": "^3.0.2",
     "datocms-client": "^0.7.5",

@@ -1,7 +1,8 @@
 const Generator = require('yeoman-generator');
 const changeCase = require('change-case');
-const oauthCli = require('oauth-cli');
 const { AccountClient, SiteClient } = require('datocms-client');
+
+const oauthToken = require('../../utils/oauthToken');
 
 const required = (value) => {
   if (value) {
@@ -19,35 +20,6 @@ const atLeastOne = (list) => {
   return 'Please insert some value!';
 };
 
-const oauthOptions = {
-  authCode: {
-    endpoint: 'https://oauth.datocms.com/oauth/authorize',
-    redirectUrl: 'http://localhost:8080/',
-    scopes: ['read_sites']
-  },
-  accessToken: {
-    endpoint: 'https://oauth.datocms.com/oauth/token',
-    clientAuth: 'form',
-  },
-  client: {
-    id: '91fbd237461fd8fbae95570765cb06a392429859f9804729f39b394ca7258e59',
-    secret: '51b2149b719ec0352d90319b5e49e520b0d6202437c380ae6e46416f0b70d914',
-  },
-};
-
-const oauthToken = () => new Promise((resolve, reject) => (
-  oauthCli(
-    oauthOptions,
-    {},
-    (error, credentials) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(credentials);
-      }
-    }
-  )
-));
 
 module.exports = class extends Generator {
 
@@ -139,35 +111,35 @@ module.exports = class extends Generator {
       this.answers,
       await this.prompt([
         {
-          type    : 'input',
-          name    : 'keywords',
-          message : 'Please add some tags to make the plugin more discoverable (comma separated)',
+          type:     'input',
+          name:     'keywords',
+          message:  'Please add some tags to make the plugin more discoverable (comma separated)',
           validate: required,
-          default: [changeCase.paramCase(this.answers.pluginType)].concat(this.answers.fieldTypes.map(ft => `${changeCase.paramCase(ft)}-field` )).join(', '),
+          default:  [changeCase.paramCase(this.answers.pluginType)].concat(this.answers.fieldTypes.map(ft => `${changeCase.paramCase(ft)}-field` )).join(', '),
         },
         {
-          type    : 'input',
-          name    : 'homepage',
-          message : 'Please add the homepage for this plugin',
+          type:     'input',
+          name:     'homepage',
+          message:  'Please add the homepage for this plugin',
           validate: required,
-          default: `https://github.com/YOUR-USER/${packageName}`
+          default:  `https://github.com/YOUR-USER/${packageName}`
         },
         {
-          type    : 'input',
-          name    : 'authorName',
-          message : 'What\'s your name?',
-          validate: required,
-        },
-        {
-          type    : 'input',
-          name    : 'authorEmail',
-          message : 'What\'s your email?',
+          type:     'input',
+          name:     'authorName',
+          message:  'What\'s your name?',
           validate: required,
         },
         {
-          type    : 'confirm',
-          name    : 'addToProject',
-          message : 'Would you like to add this plugin in development mode to one of your projects and start developing it right away?',
+          type:     'input',
+          name:     'authorEmail',
+          message:  'What\'s your email?',
+          validate: required,
+        },
+        {
+          type:    'confirm',
+          name:    'addToProject',
+          message: 'Would you like to add this plugin in development mode to one of your projects and start developing it right away?',
         },
       ])
     );
@@ -175,9 +147,9 @@ module.exports = class extends Generator {
     if (this.answers.addToProject) {
       await this.prompt([
         {
-          type    : 'confirm',
-          name    : 'foo',
-          message : 'In order to add this plugin to one of your projects we need you to sign in to DatoCMS. We\'ll open up a browser whenever you\'re ready!',
+          type:     'confirm',
+          name:     'foo',
+          message:  'In order to add this plugin to one of your projects we need you to sign in to DatoCMS. We\'ll open up a browser whenever you\'re ready!',
           validate: required,
         }
       ]);
@@ -188,11 +160,11 @@ module.exports = class extends Generator {
 
       const answers2 = await this.prompt([
         {
-          type    : 'list',
-            name    : 'site',
-            message : 'On which project you would like to add this plugin in development mode?',
-            choices: sites.map(site => ({ name: site.name, value: site })),
-            validate: required,
+          type:     'list',
+          name:     'site',
+          message:  'On which project you would like to add this plugin in development mode?',
+          choices:  sites.map(site => ({ name: site.name, value: site })),
+          validate: required,
         }
       ]);
 

@@ -198,6 +198,7 @@ module.exports = class extends Generator {
       {
         packageName,
         pluginTitle,
+        pluginType,
         description,
         authorName,
         authorEmail,

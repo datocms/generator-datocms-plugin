@@ -13,6 +13,7 @@
     "test": "echo 1"
   },
   "keywords": <%- JSON.stringify(keywords) %>,
+  "files": ["dist"],
   "author": "<%= authorName %> <<%= authorEmail %>>",
   "license": "ISC",
   "datoCmsPlugin": {
@@ -22,7 +23,7 @@
     "entryPoint": "dist/index.html",
     "pluginType": "<%= pluginType %>",
     "fieldTypes": <%- JSON.stringify(fieldTypes) %>,
-    "parameters": <%- JSON.stringify(parameterDefinitions) %>
+    "parameters": <%- JSON.stringify(parameterDefinitions, null, 2) %>
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.54",

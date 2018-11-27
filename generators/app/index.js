@@ -91,7 +91,23 @@ module.exports = class extends Generator {
         type    : 'editor',
         name    : 'parameterDefinitions',
         message : 'Please insert any configuration parameters this plugin requires (see https://www.datocms.com/docs/plugins/creating-a-new-plugin/#configuration-parameters)',
-        default : JSON.stringify({ global: [], instance: [] }, null, 2),
+        default : JSON.stringify(
+          {
+            global: [
+              {
+                id: "developmentMode",
+                label: "Development mode",
+                type: "boolean",
+                required: true,
+                default: false,
+                hint: "Shows debug messages in console",
+              },
+            ],
+            instance: []
+          },
+          null,
+          2
+        ),
         validate: (value) => {
           try {
             const defs = JSON.parse(value);

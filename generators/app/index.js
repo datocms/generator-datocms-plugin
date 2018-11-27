@@ -119,7 +119,7 @@ module.exports = class extends Generator {
             return 'Not valid JSON';
           }
         },
-      },
+      }
     ]);
 
     this.answers = Object.assign(
@@ -150,6 +150,16 @@ module.exports = class extends Generator {
           type:     'input',
           name:     'authorEmail',
           message:  'What\'s your email?',
+          validate: required,
+        },
+        {
+          type    : 'list',
+          name    : 'template',
+          message : 'Please select the preferred template',
+          choices: [
+            { name: 'Vanilla JS', value: 'vanilla' },
+            { name: 'React', value: 'react' },
+          ],
           validate: required,
         },
         {
@@ -198,12 +208,13 @@ module.exports = class extends Generator {
       parameterDefinitions,
       authorEmail,
       keywords,
+      template,
       fieldTypes,
       homepage,
     } = this.answers;
 
     this.fs.copy(
-      this.templatePath('static/**/*'),
+      this.templatePath(`${template}/**/*`),
       this.destinationRoot(),
       { globOptions: { dot: true } }
     );
@@ -218,6 +229,7 @@ module.exports = class extends Generator {
         description,
         authorName,
         authorEmail,
+        template,
         fieldTypes,
         homepage,
         parameterDefinitions: JSON.parse(parameterDefinitions),

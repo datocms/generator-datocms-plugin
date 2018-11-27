@@ -156,7 +156,7 @@ module.exports = class extends Generator {
 
       const credentials = await oauthToken();
       const accountClient = new AccountClient(credentials.accessToken);
-      const sites = await accountClient.sites.all();
+      const sites = await accountClient.sites.all({}, { allPages: true });
 
       const answers2 = await this.prompt([
         {

@@ -8,8 +8,7 @@ const required = (value) => {
   if (value) {
     return true;
   }
-
-  return 'Please insert some value!';
+return 'Please insert some value!';
 };
 
 module.exports = class extends Generator {
@@ -25,7 +24,7 @@ module.exports = class extends Generator {
 
     const credentials = await oauthToken();
     const accountClient = new AccountClient(credentials.accessToken);
-    const sites = await accountClient.sites.all();
+    const sites = await accountClient.sites.all({}, { allPages: true });
 
     this.answers = await this.prompt([
       {

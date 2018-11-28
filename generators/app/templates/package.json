@@ -14,7 +14,7 @@
     "test": "echo 1"
   },
   "keywords": <%- JSON.stringify(keywords) %>,
-  "files": ["dist"],
+  "files": ["dist", "docs"],
   "author": "<%= authorName %> <<%= authorEmail %>>",
   "license": "ISC",
   "datoCmsPlugin": {

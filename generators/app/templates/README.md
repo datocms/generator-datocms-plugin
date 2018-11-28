@@ -14,6 +14,12 @@ Install all the project dependencies with:
 yarn install
 ```
 
+Add this plugin in development mode to one of your DatoCMS project with:
+
+```
+yarn addToProject
+```
+
 Start the local development server with:
 
 ```

@@ -220,6 +220,14 @@ module.exports = class extends Generator {
     );
 
     this.fs.copyTpl(
+      this.templatePath(`webpack.config.js.${template}`),
+      this.destinationPath('webpack.config.js'),
+      {
+        packageName,
+      }
+    );
+
+    this.fs.copyTpl(
       this.templatePath('package.json'),
       this.destinationPath('package.json'),
       {

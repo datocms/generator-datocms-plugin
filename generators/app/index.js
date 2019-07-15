@@ -187,6 +187,7 @@ module.exports = class extends Generator {
 
       const credentials = await oauthToken();
       const accountClient = new AccountClient(credentials.accessToken);
+      const account = await accountClient.account.find();
       const sites = await accountClient.sites.all({}, { allPages: true });
 
       const answers2 = await this.prompt([
@@ -194,7 +195,9 @@ module.exports = class extends Generator {
           type:     'list',
           name:     'site',
           message:  'On which project you would like to add this plugin in development mode?',
-          choices:  sites.map(site => ({ name: site.name, value: site })),
+          choices:  sites
+            .filter(site => site.owner === account.id)
+            .map(site => ({ name: site.name, value: site })),
           validate: required,
         }
       ]);

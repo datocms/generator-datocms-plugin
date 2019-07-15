@@ -4,7 +4,7 @@ const oauthOptions = {
   authCode: {
     endpoint: 'https://oauth.datocms.com/oauth/authorize',
     redirectUrl: 'http://localhost:8080/',
-    scopes: ['read_sites']
+    scopes: ['read_sites', 'read_account']
   },
   accessToken: {
     endpoint: 'https://oauth.datocms.com/oauth/token',

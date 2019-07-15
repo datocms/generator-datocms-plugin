@@ -1,18 +1,23 @@
 {
   "name": "generator-datocms-plugin",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "A Yeoman generator to start developing DatoCMS plugins",
   "main": "index.js",
   "repository": "git@github.com:datocms/generator-datocms-plugin.git",
   "author": "support@datocms.com",
   "license": "MIT",
-  "files": ["generators", "utils"],
-  "keywords": ["yeoman-generator"],
+  "files": [
+    "generators",
+    "utils"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
   "dependencies": {
-    "change-case": "^3.0.2",
-    "datocms-client": "^0.7.5",
+    "change-case": "^3.1.0",
+    "datocms-client": "^2.0.7",
     "oauth-cli": "^0.1.0",
-    "yeoman-generator": "^3.1.1",
-    "yo": "^2.0.5"
+    "yeoman-generator": "^4.0.1",
+    "yo": "^3.1.0"
   }
 }

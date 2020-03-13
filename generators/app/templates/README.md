@@ -26,7 +26,7 @@ Start the local development server with:
 yarn start
 ```
 
-The plugin will be served from [https://<%= packageName %>.localtunnel.me/](https://<%= packageName %>.localtunnel.me/). Insert this URL as the plugin [Entry point URL](https://www.datocms.com/docs/plugins/creating-a-new-plugin/).
+The plugin will be served from [http://localhost:5000/](http://localhost:5000/). Insert this URL as the plugin [Entry point URL](https://www.datocms.com/docs/plugins/creating-a-new-plugin/).
 
 ## Publishing
 

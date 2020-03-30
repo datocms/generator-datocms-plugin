@@ -5,8 +5,8 @@
   "description": "<%= description %>",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"yarn dev\" \"yarn localtunnel\"",
-    "localtunnel": "lt -s <%= packageName %> --port 5000",
+    "start": "concurrently \"yarn dev\" \"yarn tunnel\"",
+    "tunnel": "ngrok http 5000",
     "dev": "NODE_ENV=development webpack-dev-server --port 5000",
     "dist": "NODE_ENV=production webpack --progress",
     "prepublishOnly": "rimraf lib dist && mkdir dist && npm run dist",
@@ -50,16 +50,15 @@
     "html-webpack-include-assets-plugin": "^1.0.5",
     "html-webpack-inline-source-plugin": "^0.0.10",
     "html-webpack-plugin": "^3.2.0",
-    "localtunnel": "^1.9.1",
     "mini-css-extract-plugin": "^0.4.3",
     "node-sass": "^4.9.3",
+    "ngrok": "^3.2.7",
     "sass-loader": "^7.1.0",
     "serve": "^10.0.2",
     "style-loader": "^0.23.0",
     "webpack": "^4.16.1",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.10",
-    "generator-datocms-plugin": "^1.0.3",
     "yo": "^2.0.5"
   },
   "dependencies": {

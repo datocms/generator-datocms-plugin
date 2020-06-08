@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default mapPluginToProps => BaseComponent => (
   class ConnectToDatoCms extends Component {
+    static propTypes = {
+      plugin: PropTypes.object.isRequired,
+    }
+
     constructor(props) {
       super(props);
       this.state = mapPluginToProps(props.plugin);

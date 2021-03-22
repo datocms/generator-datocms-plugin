@@ -12,40 +12,49 @@ const required = value => {
 };
 
 module.exports = class extends Generator {
+  constructor(args, opts) {
+    super(args, opts);
+
+    this.argument("projectToken", { type: String, required: false });
+  }
+
   async prompting() {
-    await this.prompt([
-      {
-        type: "confirm",
-        name: "foo",
-        message:
-          "In order to add this plugin to one of your projects we need you to sign in to DatoCMS. We'll open up a browser whenever you're ready!",
-        validate: required
-      }
-    ]);
+    if (!this.options.projectToken) {
+      await this.prompt([
+        {
+          type: "confirm",
+          name: "foo",
+          message:
+            "No project API Token specified: in order to add this plugin to one of your projects we need you to sign in to DatoCMS. We'll open up a browser whenever you're ready!",
+          validate: required
+        }
+      ]);
 
-    const credentials = await oauthToken();
-    const accountClient = new AccountClient(credentials.accessToken);
-    const account = await accountClient.account.find();
-    const sites = await accountClient.sites.all({}, { allPages: true });
+      const credentials = await oauthToken();
+      const accountClient = new AccountClient(credentials.accessToken);
+      const account = await accountClient.account.find();
+      const sites = await accountClient.sites.all({}, { allPages: true });
 
-    this.answers = await this.prompt([
-      {
-        type: "list",
-        name: "site",
-        message:
-          "On which project you would like to add this plugin in development mode?",
-        choices: sites
-          .filter(site => site.owner === account.id)
-          .map(site => ({ name: site.name, value: site })),
-        validate: required
-      }
-    ]);
+      this.answers = await this.prompt([
+        {
+          type: "list",
+          name: "site",
+          message:
+            "On which project you would like to add this plugin in development mode?",
+          choices: sites
+            .filter(site => site.owner === account.id)
+            .map(site => ({ name: site.name, value: site })),
+          validate: required
+        }
+      ]);
+    }
   }
 
   async writing() {
-    const { site } = this.answers;
+    const token = this.options.projectToken || this.answers.site.readwriteToken;
 
-    const client = new SiteClient(site.readwriteToken);
+    const client = new SiteClient(token);
+
     const pkg = JSON.parse(
       fs.readFileSync(this.destinationPath("package.json"))
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import Main from './Main';
+import Root from './Root';
 
 window.DatoCmsPlugin.init((plugin) => {
   plugin.startAutoResizer();
@@ -9,5 +9,5 @@ window.DatoCmsPlugin.init((plugin) => {
   const container = document.createElement('div');
   document.body.appendChild(container);
 
-  render(<Main plugin={plugin} />, container);
+  render(<Root plugin={plugin} />, container);
 });

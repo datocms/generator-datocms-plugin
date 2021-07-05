@@ -19,5 +19,8 @@
     "oauth-cli": "^0.1.0",
     "yeoman-generator": "^5.3.0",
     "yo": "^4.2.0"
+  },
+  "devDependencies": {
+    "np": "^7.5.0"
   }
 }
